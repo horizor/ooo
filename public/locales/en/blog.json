@@ -1,0 +1,20 @@
+{
+  "blogTitle": "OLMOCR Blog",
+  "posts": {
+    "1-blog-post": {
+      "title": "From Image to Text in Seconds: A Step-by-Step Guide to Using OLMOCR"
+    },
+    "2-blog-post": {
+      "title": "AI Meets OCR: How to Use OLMOCR for Multilingual Text Extraction"
+    },
+    "3-blog-post": {
+      "title": "Experience Unmatched Accuracy in Text Extraction with OLMOCR"
+    },
+    "4-blog-post": {
+      "title": "Transform Images and PDFs into Text Effortlessly with OLMOCR"
+    },
+    "5-blog-post": {
+      "title": "OLMOCR: Transforming Your Images into Editable Text"
+    }
+  }
+}

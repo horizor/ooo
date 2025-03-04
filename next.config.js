@@ -1,4 +1,4 @@
-const { i18n } = require("./next-i18next.config")
+const { i18n } = require('./next-i18next.config');
 
 module.exports = {
   i18n,
@@ -7,5 +7,5 @@ module.exports = {
     ZHIPU_API_KEY: process.env.ZHIPU_API_KEY,
     ARK_API_KEY: process.env.ARK_API_KEY,
   },
-}
-
+};
+ 

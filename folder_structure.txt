@@ -1,0 +1,67 @@
+
+©¦  .env.local
+©¦  .eslintrc.json
+©¦  .gitattributes
+©¦  .gitignore
+©¦  folder_structure.txt
+©¦  LICENSE
+©¦  next-i18next.config.js
+©¦  next.config.js
+©¦  next.config.mjs
+©¦  npm
+©¦  package-lock.json
+©¦  package.json
+©¦  postcss.config.js
+©¦  postcss.config.mjs
+©¦  README.md
+©¦  tailwind.config.js
+©¦  
+©À©¤public
+©¦  ©¦  next.svg
+©¦  ©¦  vercel.svg
+©¦  ©¦  
+©¦  ©À©¤images
+©¦  ©¦  ©¦  avatar1.png
+©¦  ©¦  ©¦  avatar2.png
+©¦  ©¦  ©¦  avatar3.png
+©¦  ©¦  ©¦  avatar4.png
+©¦  ©¦  ©¦  logo.png
+©¦  ©¦  ©¦  
+©¦  ©¦  ©¸©¤feature-icons
+©¦  ©¦          1.svg
+©¦  ©¦          2.svg
+©¦  ©¦          3.svg
+©¦  ©¦          4.svg
+©¦  ©¦          5.svg
+©¦  ©¦          6.svg
+©¦  ©¦          
+©¦  ©¸©¤locales
+©¦      ©À©¤en
+©¦      ©¦      blog.json
+©¦      ©¦      common.json
+©¦      ©¦      
+©¦      ©¸©¤zh
+©¦              blog.json
+©¦              common.json
+©¦              
+©À©¤src
+©¦  ©À©¤components
+©¦  ©¦      Footer.js
+©¦  ©¦      Header.js
+©¦  ©¦      LanguageSelector.js
+©¦  ©¦      Layout.js
+©¦  ©¦      UploadSection.js
+©¦  ©¦      
+©¦  ©À©¤pages
+©¦  ©¦  ©¦  index.js
+©¦  ©¦  ©¦  _app.js
+©¦  ©¦  ©¦  _document.js
+©¦  ©¦  ©¦  
+©¦  ©¦  ©¸©¤api
+©¦  ©¦          extract-text.js
+©¦  ©¦          hello.js
+©¦  ©¦          
+©¦  ©¸©¤styles
+©¦          globals.css
+©¦          
+©¸©¤tmp

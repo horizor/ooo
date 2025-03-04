@@ -1,0 +1,20 @@
+{
+  "blogTitle": "OLMOCR 博客",
+  "posts": {
+    "1-blog-post": {
+      "title": "几秒钟内从图像到文本：使用 OLMOCR 的分步指南"
+    },
+    "2-blog-post": {
+      "title": "AI 与 OCR 的结合：如何使用 OLMOCR 进行多语言文本提取"
+    },
+    "3-blog-post": {
+      "title": "体验 OLMOCR 无与伦比的文本提取精准度"
+    },
+    "4-blog-post": {
+      "title": "轻松将图像和 PDF 转换为文本，尽在 OLMOCR"
+    },
+    "5-blog-post": {
+      "title": "OLMOCR：将您的图像转换为可编辑文本"
+    }
+  }
+}

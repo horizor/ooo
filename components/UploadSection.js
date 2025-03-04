@@ -23,8 +23,7 @@ export default function UploadSection() {
     const file = acceptedFiles[0];
     
     // 检查文件大小
-    // 修改文件大小限制
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > 5 * 1024 * 1024) {
       setError(t('upload.fileTooLarge'));
       setIsLoading(false);
       return;
@@ -65,9 +64,9 @@ export default function UploadSection() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.png', '.jpg', '.jpeg', '.webp'],
+      'image/*': ['.png', '.jpg', '.jpeg'],
     },
-    maxSize: 10 * 1024 * 1024, // 10MB
+    maxSize: 5 * 1024 * 1024, // 5MB
     maxFiles: 1,
   });
 

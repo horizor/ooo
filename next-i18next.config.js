@@ -3,6 +3,6 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'zh']
   },
-    ns: ['common'],
+    ns: ['common', 'blog', 'pricing'],
 };
  

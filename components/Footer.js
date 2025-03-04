@@ -35,7 +35,7 @@ export default function Footer() {
             </p>
           </div>
 
-          
+      
 
           {/* Language Links */}
           <div className="text-center md:text-left">

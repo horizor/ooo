@@ -23,8 +23,8 @@
     "extractedText": "Extracted Text",
     "copyText": "Copy",
     "textCopied": "Text copied to clipboard!",
-    "glm4vSupportedFormats": "Supported formats:  PDF, PNG, JPG, JPEG",
-    "glm4vSizeLimit": "Image size limit: Within 5MB",
+    "glm4vSupportedFormats": "Supported formats: PNG, JPG, JPEG, WEBP",
+    "glm4vSizeLimit": "Image size limit: Within 10MB",
     "fileInfo": "File Information",
     "fileName": "File Name",
     "fileSize": "Size",
@@ -32,7 +32,7 @@
     "noFileSelected": "Please select an image file",
     "processingError": "File processing failed, please try again",
     "invalidFileType": "Unsupported file format",
-    "fileTooLarge": "File is too large, please upload an image within 5MB"
+    "fileTooLarge": "File is too large, please upload an image within 10MB"
   },
   
   "footer": {
