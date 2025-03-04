@@ -1,0 +1,45 @@
+{
+  "defaultTitle": "LLMOCR ",
+  "defaultDescription": "LLMOCR ",
+  "nav": {
+    "home": "Home",
+
+    "contact": "Contact",
+    "ocrpdf": "OCR PDF",
+    "ocrpng": "OCR PNG",
+    "ocrjpg": "OCR JPG"
+    },
+
+
+  "upload": {
+    "title": "Extract Text Instantly",
+
+    "dropAreaTitle": "Upload Your File",
+    "dropAreaText": "Drag and drop files here or click to browse",
+    "browseButton": "Browse Files",
+    "supportedFormats": "Supported formats:  PDF, PNG, JPG, JPEG",
+    "successMessage": "File uploaded successfully! Processing will begin now.",
+    "processing": "Processing your file... This may take a few moments.",
+    "extractedText": "Extracted Text",
+    "copyText": "Copy",
+    "textCopied": "Text copied to clipboard!",
+    "glm4vSupportedFormats": "Supported formats:  PDF, PNG, JPG, JPEG",
+    "glm4vSizeLimit": "Image size limit: Within 5MB",
+    "fileInfo": "File Information",
+    "fileName": "File Name",
+    "fileSize": "Size",
+    "fileType": "Type",
+    "noFileSelected": "Please select an image file",
+    "processingError": "File processing failed, please try again",
+    "invalidFileType": "Unsupported file format",
+    "fileTooLarge": "File is too large, please upload an image within 5MB"
+  },
+  
+  "footer": {
+    "link": "Link",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "language": "Languages"
+  }
+  
+}

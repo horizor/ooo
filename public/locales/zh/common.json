@@ -1,0 +1,42 @@
+{
+  "defaultTitle": "LLMOCR ",
+  "defaultDescription": "LLMOCR ",
+  "nav": {
+    "home": "首页",
+
+    "ocrpdf": "OCR PDF",
+    "ocrpng": "OCR PNG",
+    "ocrjpg": "OCR JPG"
+  },
+
+  "upload": {
+    "title": "即时提取文本",
+  
+    "dropAreaTitle": "上传您的文件",
+    "dropAreaText": "将文件拖放到此处或单击浏览",
+    "browseButton": "浏览文件",
+    "supportedFormats": "支持的格式： PDF, PNG, JPG, JPEG",
+    "successMessage": "文件上传成功！处理将立即开始。",
+    "processing": "正在处理您的文件... 这可能需要几分钟。",
+    "extractedText": "提取的文本",
+    "copyText": "复制",
+    "textCopied": "文本已复制到剪贴板！",
+    "glm4vSupportedFormats": "支持的格式： PDF, PNG, JPG, JPEG",
+    "glm4vSizeLimit": "图像大小限制：不超过 5MB",
+    "fileInfo": "文件信息",
+    "fileName": "文件名",
+    "fileSize": "大小",
+    "fileType": "类型",
+    "noFileSelected": "请选择一个图像文件",
+    "processingError": "文件处理失败，请重试",
+    "invalidFileType": "不支持的文件格式",
+    "fileTooLarge": "文件过大，请上传不超过 5MB 的图像"
+  },
+
+  "footer": {
+    "link": "链接",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "language": "语言"
+  }
+}
