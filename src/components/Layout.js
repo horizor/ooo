@@ -11,7 +11,7 @@ export default function Layout({ children, pageTitle, pageDescription }) {
   const description = pageDescription || t('defaultDescription');
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-r from-purple-50 to-blue-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r from-blue-50 to-blue-50">
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
