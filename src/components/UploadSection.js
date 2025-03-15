@@ -1,6 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import axios from 'axios'; // 导入 Axios
 
 export default function UploadSection() {
   const { t } = useTranslation('common');
@@ -13,7 +14,7 @@ export default function UploadSection() {
     setError(null);
     setExtractedText('');
     setFileInfo(null);
-    
+
     if (acceptedFiles.length === 0) {
       setError(t('upload.noFileSelected'));
       return;
@@ -21,42 +22,40 @@ export default function UploadSection() {
 
     setIsLoading(true);
     const file = acceptedFiles[0];
-    
+
     // 检查文件大小
-    // 修改文件大小限制
     if (file.size > 10 * 1024 * 1024) {
       setError(t('upload.fileTooLarge'));
       setIsLoading(false);
       return;
     }
-    
+
     // 显示文件信息
     const fileDetails = {
       name: file.name,
       type: file.type,
-      size: (file.size / 1024 / 1024).toFixed(2)
+      size: (file.size / 1024 / 1024).toFixed(2),
     };
     setFileInfo(fileDetails);
-    
+
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/extract-text', {
-        method: 'POST',
-        body: formData,
+      // 使用 Axios 发送请求，设置超时时间为 30 秒
+      const response = await axios.post('/api/extract-text', formData, {
+        timeout: 30000, // 30 秒超时
       });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || t('upload.processingError'));
-      }
 
-      const data = await response.json();
-      setExtractedText(data.content);
+      // 假设后端返回的数据中，提取的文本在 content 字段
+      setExtractedText(response.data.content);
     } catch (error) {
       console.error('处理错误:', error);
-      setError(error.message || t('upload.processingError'));
+      if (error.code === 'ECONNABORTED') {
+        setError(t('upload.timeoutError')); // 请求超时的情况
+      } else {
+        setError(error.response?.data?.message || t('upload.processingError'));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -77,11 +76,8 @@ export default function UploadSection() {
   };
 
   return (
-    <div id="upload" className="max-w-4xl mx-auto p-2 mt-2 py-20">  {/* 添加 id="upload" */}
-      <h1 className="text-4xl font-bold text-center mb-4">
-        {t('upload.title')}
-      </h1>
-
+    <div id="upload" className="max-w-4xl mx-auto p-2 mt-2 py-20">
+      <h1 className="text-4xl font-bold text-center mb-4">{t('upload.title')}</h1>
 
       <div
         {...getRootProps()}
@@ -108,15 +104,10 @@ export default function UploadSection() {
           <p className="text-gray-500">
             {isDragActive ? t('upload.dropAreaActive') : t('upload.dropAreaText')}
           </p>
-          <p className="text-sm text-gray-400 mt-2">
-            {t('upload.glm4vSupportedFormats')}
-          </p>
-          <p className="text-xs text-gray-400 mt-1">
-            {t('upload.glm4vSizeLimit')}
-          </p>
+          <p className="text-sm text-gray-400 mt-2">{t('upload.glm4vSupportedFormats')}</p>
+          <p className="text-xs text-gray-400 mt-1">{t('upload.glm4vSizeLimit')}</p>
         </div>
       </div>
-
 
       {error && (
         <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -150,4 +141,3 @@ export default function UploadSection() {
     </div>
   );
 }
-
