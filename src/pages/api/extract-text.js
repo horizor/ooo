@@ -87,6 +87,8 @@ export default async function handler(req, res) {
     const openai = new OpenAI({
       apiKey: process.env.ARK_API_KEY,
       baseURL: 'https://ark.cn-beijing.volces.com/api/v3',
+         timeout: 60000, // 设置60秒超时
+      maxRetries: 3, // 增加重试次数
     });
 
     // 调用方舟pro-32k-250115模型
