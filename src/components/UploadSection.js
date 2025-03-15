@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 export default function UploadSection() {
@@ -8,11 +8,14 @@ export default function UploadSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
+  const [processingTime, setProcessingTime] = useState(0);
+  const processingTimerRef = useRef(null);
 
   const onDrop = async (acceptedFiles) => {
     setError(null);
     setExtractedText('');
     setFileInfo(null);
+    setProcessingTime(0);
     
     if (acceptedFiles.length === 0) {
       setError(t('upload.noFileSelected'));
@@ -41,15 +44,26 @@ export default function UploadSection() {
     const formData = new FormData();
     formData.append('file', file);
 
+    // 开始计时
+    const startTime = Date.now();
+    processingTimerRef.current = setInterval(() => {
+      setProcessingTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+
     try {
       // 使用 AbortController 设置更长的超时时间
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 设置30秒超时
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // 设置60秒超时
       
       const response = await fetch('/api/extract-text', {
         method: 'POST',
         body: formData,
-        signal: controller.signal
+        signal: controller.signal,
+        // 添加缓存控制头
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
       });
       
       clearTimeout(timeoutId); // 清除超时计时器
@@ -66,10 +80,14 @@ export default function UploadSection() {
       // 区分超时错误和其他错误
       if (error.name === 'AbortError') {
         setError(t('upload.timeoutError') || '请求超时，模型处理时间过长');
+      } else if (error.message === 'Failed to fetch') {
+        // 网络错误，可能是请求仍在处理中
+        setError('网络连接中断，但模型可能仍在处理中。请稍后刷新页面查看结果。');
       } else {
         setError(error.message || t('upload.processingError'));
       }
     } finally {
+      clearInterval(processingTimerRef.current);
       setIsLoading(false);
     }
   };
@@ -140,6 +158,11 @@ export default function UploadSection() {
         <div className="mt-6 text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
           <p className="mt-2">{t('upload.processing')}</p>
+          {processingTime > 0 && (
+            <p className="text-sm text-gray-500 mt-1">
+              处理时间: {processingTime} 秒 {processingTime > 10 ? '(大型图片可能需要15-30秒)' : ''}
+            </p>
+          )}
         </div>
       )}
 
