@@ -44,7 +44,7 @@ export default function UploadSection() {
     try {
       // 使用 Axios 发送请求，设置超时时间为 30 秒
       const response = await axios.post('/api/extract-text', formData, {
-        timeout: 30000, // 30 秒超时
+        timeout: 60000, // 30 秒超时
       });
 
       // 假设后端返回的数据中，提取的文本在 content 字段
