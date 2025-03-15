@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 export default function UploadSection() {
@@ -8,68 +8,11 @@ export default function UploadSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
-  const [processingTime, setProcessingTime] = useState(0);
-  const [currentTaskId, setCurrentTaskId] = useState(null);
-  const processingTimerRef = useRef(null);
-  const pollingIntervalRef = useRef(null);
-
-  // 清理函数
-  const cleanupTimers = () => {
-    if (processingTimerRef.current) {
-      clearInterval(processingTimerRef.current);
-      processingTimerRef.current = null;
-    }
-    if (pollingIntervalRef.current) {
-      clearInterval(pollingIntervalRef.current);
-      pollingIntervalRef.current = null;
-    }
-  };
-
-  // 组件卸载时清理定时器
-  useEffect(() => {
-    return cleanupTimers;
-  }, []);
-
-  // 轮询检查任务状态
-  const pollTaskStatus = async (taskId) => {
-    try {
-      const response = await fetch(`/api/extract-text?taskId=${taskId}`, {
-        method: 'GET',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('获取任务状态失败');
-      }
-
-      const data = await response.json();
-      
-      if (data.status === 'completed') {
-        setExtractedText(data.content);
-        setIsLoading(false);
-        cleanupTimers();
-      } else if (data.status === 'error') {
-        setError(data.error || t('upload.processingError'));
-        setIsLoading(false);
-        cleanupTimers();
-      }
-      // 如果状态是 'processing'，继续轮询
-    } catch (error) {
-      console.error('轮询任务状态时出错:', error);
-      // 轮询出错不停止轮询，继续尝试
-    }
-  };
 
   const onDrop = async (acceptedFiles) => {
     setError(null);
     setExtractedText('');
     setFileInfo(null);
-    setProcessingTime(0);
-    setCurrentTaskId(null);
-    cleanupTimers();
     
     if (acceptedFiles.length === 0) {
       setError(t('upload.noFileSelected'));
@@ -96,46 +39,56 @@ export default function UploadSection() {
     
     const formData = new FormData();
     formData.append('file', file);
-
-    // 开始计时
-    const startTime = Date.now();
-    processingTimerRef.current = setInterval(() => {
-      setProcessingTime(Math.floor((Date.now() - startTime) / 1000));
-    }, 1000);
-
+  
     try {
-      // 上传文件并获取任务ID
-      const response = await fetch('/api/extract-text', {
+      // 创建任务
+      const createResponse = await fetch('/api/create-extraction-task', {
         method: 'POST',
         body: formData,
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
       });
       
-      if (!response.ok) {
-        const errorData = await response.json();
+      if (!createResponse.ok) {
+        const errorData = await createResponse.json();
         throw new Error(errorData.message || t('upload.processingError'));
       }
-
-      const data = await response.json();
+  
+      const { taskId } = await createResponse.json();
       
-      if (data.taskId) {
-        setCurrentTaskId(data.taskId);
-        
-        // 开始轮询任务状态
-        pollingIntervalRef.current = setInterval(() => {
-          pollTaskStatus(data.taskId);
-        }, 2000); // 每2秒轮询一次
-      } else {
-        throw new Error('服务器未返回任务ID');
-      }
+      // 开始轮询任务状态
+      await pollTaskResult(taskId);
     } catch (error) {
       console.error('处理错误:', error);
       setError(error.message || t('upload.processingError'));
       setIsLoading(false);
-      cleanupTimers();
+    }
+  };
+
+  // 轮询任务结果
+  const pollTaskResult = async (taskId) => {
+    try {
+      const response = await fetch(`/api/get-extraction-result?taskId=${taskId}`);
+      
+      if (!response.ok) {
+        throw new Error('获取任务结果失败');
+      }
+      
+      const data = await response.json();
+      
+      if (data.status === 'completed') {
+        // 任务完成
+        setExtractedText(data.result);
+        setIsLoading(false);
+      } else if (data.status === 'failed') {
+        // 任务失败
+        throw new Error(data.error || t('upload.processingError'));
+      } else {
+        // 任务仍在处理中，继续轮询
+        setTimeout(() => pollTaskResult(taskId), 2000);
+      }
+    } catch (error) {
+      console.error('轮询错误:', error);
+      setError(error.message);
+      setIsLoading(false);
     }
   };
 
@@ -154,10 +107,11 @@ export default function UploadSection() {
   };
 
   return (
-    <div id="upload" className="max-w-4xl mx-auto p-2 mt-2 py-20">
+    <div id="upload" className="max-w-4xl mx-auto p-2 mt-2 py-20">  {/* 添加 id="upload" */}
       <h1 className="text-4xl font-bold text-center mb-4">
         {t('upload.title')}
       </h1>
+
 
       <div
         {...getRootProps()}
@@ -193,6 +147,7 @@ export default function UploadSection() {
         </div>
       </div>
 
+
       {error && (
         <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-600">{error}</p>
@@ -203,22 +158,6 @@ export default function UploadSection() {
         <div className="mt-6 text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
           <p className="mt-2">{t('upload.processing')}</p>
-          {processingTime > 0 && (
-            <p className="text-sm text-gray-500 mt-1">
-              处理时间: {processingTime} 秒 {processingTime > 10 ? '(大型图片可能需要15-30秒)' : ''}
-            </p>
-          )}
-          {currentTaskId && processingTime > 10 && (
-            <p className="text-sm text-blue-500 mt-1">
-              正在后台处理中，请耐心等待...
-            </p>
-          )}
-        </div>
-      )}
-
-      {fileInfo && !isLoading && !extractedText && (
-        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-yellow-600">文件已上传，正在等待处理结果...</p>
         </div>
       )}
 
