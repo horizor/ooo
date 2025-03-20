@@ -29,9 +29,9 @@ export default function Blog() {
             onLoad={handleIframeLoad}
           />
           
-          {/* Loading 效果 */}
+          {/* Loading 效果 - 调整为靠上显示 */}
           {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-75">
+            <div className="absolute inset-0 flex justify-center bg-gray-100 bg-opacity-75 pt-20">
               <div className="text-center">
                 <div className="text-2xl font-semibold text-gray-800 animate-pulse">
                   Loading
